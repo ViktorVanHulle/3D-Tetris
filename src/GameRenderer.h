@@ -5,17 +5,18 @@
 #include "Tunnel.h"
 #include "Window.h"
 #include "Block.h"
+#include <vector>
 
 class GameRenderer {
 private:
 	unsigned int tunnelVAO;
 	Tunnel* tunnel;
 	Block* activeBlock;
+	std::vector<Block> solid_blocks = std::vector<Block>(250);
 	Window window;
 	void renderTunnel();
 	void renderBlock();
 public:
-
 	GameRenderer();
 	void renderer();
 	void init();

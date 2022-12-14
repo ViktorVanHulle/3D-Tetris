@@ -11,8 +11,23 @@ void GameRenderer::renderTunnel()
 
 void GameRenderer::renderBlock()
 {
-	glBindVertexArray(activeBlock->getVAO());
-	activeBlock->drawActiveBlock();
+
+	for (auto& block : solid_blocks) {
+		block.drawSolidBlock();
+	}
+
+	if (activeBlock->getActive()) {
+		glBindVertexArray(activeBlock->getVAO());
+		activeBlock->drawActiveBlock();
+	}
+	else {
+		solid_blocks.push_back(*activeBlock);
+		activeBlock = new Block();
+		activeBlock->createBlock();
+	}
+
+
+
 
 	glBindVertexArray(0);
 	glUseProgram(0);
@@ -41,10 +56,13 @@ void GameRenderer::renderer()
 void GameRenderer::init()
 {
 	tunnel = new Tunnel();
-	activeBlock = new Block(5, 5, 1);
+	//first active block
+	activeBlock = new Block();
+
 	glGenVertexArrays(1, &tunnelVAO);
+
 	tunnel->createTunnel();
 	activeBlock->createBlock();
-	
+
 
 }

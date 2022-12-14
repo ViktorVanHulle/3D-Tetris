@@ -10,6 +10,7 @@
 
 class Block {
 private:
+	bool active = true;
 	int x_coord;
 	int y_coord;
 	int z_coord;
@@ -63,6 +64,7 @@ private:
 	};
 
 public:
+	Block();
 	Block(int x, int y, int z);
 	Window window;
 	void createBlock();
@@ -74,6 +76,7 @@ public:
 	int getX() { return x_coord; };
 	int getY() { return y_coord; };
 	int getZ() { return z_coord; };
+	int getActive() { return active; };
 };
 
 #endif // !BLOCK_H_
