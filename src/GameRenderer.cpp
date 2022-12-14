@@ -12,7 +12,7 @@ void GameRenderer::renderTunnel()
 void GameRenderer::renderBlock()
 {
 	glBindVertexArray(activeBlock->getVAO());
-	activeBlock->drawBlock();
+	activeBlock->drawActiveBlock();
 
 	glBindVertexArray(0);
 	glUseProgram(0);

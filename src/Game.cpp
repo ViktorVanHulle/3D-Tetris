@@ -4,6 +4,7 @@ void Game::init()
 {
     //Window
     window.windowCreator();
+
     //Renderer
     gameRenderer = new GameRenderer();
 }

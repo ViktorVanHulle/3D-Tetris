@@ -87,7 +87,8 @@ in vec3 position;
 
 void main()
 {
-   FragColor = mix(ourColor, texture(uCubeTexture, position), texRatio);
+    vec4 color = mix(ourColor, texture(uCubeTexture, position), texRatio);
+	FragColor = vec4(color.rgb, 0.3);
 }
 )";
 #endif

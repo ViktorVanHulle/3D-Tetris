@@ -39,10 +39,14 @@ void Block::createBlock() {
 	glBindVertexArray(0);
 }
 
-void Block::drawBlock() {
+void Block::drawActiveBlock() {
 
 	GLfloat blueColor[] = {
 		0.0f, 0.0f, 1.0f,
+	};//Blue
+
+	GLfloat darkBlueColor[] = {
+	0.0f, 0.0f, 139.0f / 256.0f
 	};//Blue
 
 	//COLOR
@@ -71,13 +75,27 @@ void Block::drawBlock() {
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
 	glUniform4fv(vertexColorLocation, 1, blueColor);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glUniform4fv(vertexColorLocation, 1, darkBlueColor);
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glUniform4fv(vertexColorLocation, 1, blueColor);
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Block::drawSolidBlock() {
+
 }
 
 void Block::moveTile(int key) {
@@ -103,5 +121,8 @@ void Block::moveTile(int key) {
 	if (key == GLFW_KEY_X) {
 		if (z_coord + 1 < 11.0f)
 			z_coord++;
+		//if (z_coord == 11.0f) {
+		//	drawSolidBlock();
+		//}
 	}
 }

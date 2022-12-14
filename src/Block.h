@@ -66,7 +66,8 @@ public:
 	Block(int x, int y, int z);
 	Window window;
 	void createBlock();
-	void drawBlock();
+	void drawActiveBlock();
+	void drawSolidBlock();
 	void moveTile(int key);
 	GLuint getBlockProgram() { return block_program; };
 	unsigned int getVAO() { return blockVAO; };
