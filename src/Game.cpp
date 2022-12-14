@@ -6,6 +6,9 @@ void Game::init()
     window->windowCreator();
     //Renderer
     gameRenderer = new GameRenderer();
+    //Camera
+
+    //glUseProgram(gameRenderer->getTunnel()->getTunnelProgram());
 }
 
 void Game::run()
@@ -18,9 +21,11 @@ void Game::run()
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
+        //bg color
+        glClearColor(0.128f, 0.128f, 0.128f, 1.0f);
 
         //CODE HERE
-
+        gameRenderer->renderer();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window->winWindow);

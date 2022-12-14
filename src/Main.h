@@ -3,6 +3,7 @@
 
 #include "Externs.h"
 #include "Game.h"
+#include <tclap/CmdLine.h>
 
 void openGLInit();
 

@@ -5,8 +5,10 @@ add_executable(
 	Window.cpp
 	Game.cpp
 	GameRenderer.cpp
-	"Main.h" "Window.h" "Game.h" "GameRenderer.h"
-)
+	Tunnel.cpp
+	Shaders.cpp
+	"Main.h" "Window.h" "Game.h" "GameRenderer.h" "Tunnel.h"
+ "Shaders.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE TCLAP)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm)
