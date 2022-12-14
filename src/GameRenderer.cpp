@@ -20,12 +20,10 @@ void GameRenderer::init()
 
 void GameRenderer::renderer()
 {
-
 	//rendering tunnel
 	renderTunnel();
 	//rendering first cube
 	renderBlock();
-
 	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
@@ -51,6 +49,9 @@ void GameRenderer::renderBlock()
 	if (activeBlock->getActive()) {
 		glBindVertexArray(activeBlock->getVAO());
 		activeBlock->drawActiveBlock();
+		if (activeBlock->getZ() == 10.0f) {
+			activeBlock->setActive(false);
+		}
 	}
 	else {
 		solid_blocks.push_back(*activeBlock);
@@ -62,14 +63,39 @@ void GameRenderer::renderBlock()
 	glUseProgram(0);
 }
 
-void GameRenderer::checkBoxCollision() {
+void GameRenderer::checkBoxCollision(int key) {
 
-	for (auto& block : solid_blocks) {
-		if (activeBlock->getX() == block.getX() &&
-			activeBlock->getY() == block.getY() &&
-			activeBlock->getZ()+1 == block.getZ() &&
-			activeBlock->getActive()) {
-			activeBlock->setActive(false);
+
+	if (key == GLFW_KEY_X) {
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() + 1 == block.getZ() &&
+				activeBlock->getActive()) {
+				activeBlock->setActive(false);
+			}
 		}
 	}
+	else if (key == GLFW_KEY_SPACE) {
+		int coll_z = 11;
+
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getActive()) {
+				if (block.getZ() < coll_z) coll_z = block.getZ();
+			}
+		}
+		std::cout << coll_z << std::endl;
+
+		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
+		activeBlock->setActive(false);
+	}
+
+
+
+
+
 }

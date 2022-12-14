@@ -12,7 +12,7 @@ private:
 	unsigned int tunnelVAO;
 	Tunnel* tunnel;
 	Block* activeBlock;
-	std::vector<Block> solid_blocks = std::vector<Block>(250);
+	std::vector<Block> solid_blocks;
 	Window window;
 	void renderTunnel();
 	void renderBlock();
@@ -20,7 +20,7 @@ public:
 	GameRenderer();
 	void renderer();
 	void init();
-	void checkBoxCollision();
+	void checkBoxCollision(int key);
 	Tunnel* getTunnel() { return tunnel; };
 	Block* getActiveBlock() { return activeBlock; }
 };

@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Color.h"
 
 Block::Block() {
 	this->window = Window::getInstance();
@@ -96,14 +97,12 @@ void Block::drawActiveBlock() {
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Block::drawSolidBlock() {
 
-	GLfloat blueColor[] = {
-	0.0f, 0.0f, 1.0f,
-	};//Blue
+	color = Color::chooseColor(z_coord);
 
 	//COLOR
 	int vertexColorLocation = glGetUniformLocation(block_program, "ourColor");
@@ -130,7 +129,7 @@ void Block::drawSolidBlock() {
 	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
 	glUniform1f(glGetUniformLocation(block_program, "transparency"), 1.0f);
 
-	glUniform4fv(vertexColorLocation, 1, blueColor);
+	glUniform4fv(vertexColorLocation, 1, glm::value_ptr(color));
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -161,8 +160,5 @@ void Block::moveTile(int key) {
 	if (key == GLFW_KEY_X) {
 		if (z_coord + 1 < 11.0f)
 			z_coord++;
-		if (z_coord == 10.0f) {
-			active = false;
-		}
 	}
 }

@@ -14,6 +14,7 @@ private:
 	int x_coord;
 	int y_coord;
 	int z_coord;
+	glm::vec4 color;
 	GLuint block_program;
 	std::shared_ptr<Shader> shader;
 	//Window* window;
@@ -77,6 +78,7 @@ public:
 	int getX() { return x_coord; };
 	int getY() { return y_coord; };
 	int getZ() { return z_coord; };
+	void setZ(int z) { this->z_coord = z; };
 	int getActive() { return active; };
 	void setActive(bool state) { this->active = state; };
 };
