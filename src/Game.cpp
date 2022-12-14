@@ -47,27 +47,22 @@ void Game::inputChecker() {
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_PRESS && pressed == false) {
         pressed = true;
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_UP);
         gameRenderer->checkBoxCollision(GLFW_KEY_UP);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_PRESS && pressed == false) {
         pressed = true;
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_DOWN);
         gameRenderer->checkBoxCollision(GLFW_KEY_DOWN);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_PRESS && pressed == false) {
         pressed = true;
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_LEFT);
         gameRenderer->checkBoxCollision(GLFW_KEY_LEFT);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_PRESS && pressed == false) {
         pressed = true;
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_RIGHT);
         gameRenderer->checkBoxCollision(GLFW_KEY_RIGHT);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_PRESS && pressed == false) {
         pressed = true;
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_X);
         gameRenderer->checkBoxCollision(GLFW_KEY_X);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_SPACE) == GLFW_PRESS && pressed == false) {

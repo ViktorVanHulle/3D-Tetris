@@ -81,7 +81,7 @@ void GameRenderer::checkBoxCollision(int key) {
 		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
 		activeBlock->setActive(false);
 	}
-	else if (key == GLFW_KEY_X) { //X, UP, DOWN, LEFT, RIGHT
+	else if (key == GLFW_KEY_X) { 
 
 		for (auto& block : solid_blocks) {
 
@@ -93,9 +93,60 @@ void GameRenderer::checkBoxCollision(int key) {
 			}
 		}
 	}
+	else if (key == GLFW_KEY_UP) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
 
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() - 1 == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
 
+		if(!taken) activeBlock->moveTile(GLFW_KEY_UP);
+	}
+	else if (key == GLFW_KEY_DOWN) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
 
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() + 1 == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
 
+		if (!taken) activeBlock->moveTile(GLFW_KEY_DOWN);
+	}
+	else if (key == GLFW_KEY_LEFT) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
 
+			if (activeBlock->getX() + 1 == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if (!taken) activeBlock->moveTile(GLFW_KEY_LEFT);
+	}
+	else if (key == GLFW_KEY_RIGHT) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() - 1 == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if (!taken) activeBlock->moveTile(GLFW_KEY_RIGHT);
+	}
 }
