@@ -8,6 +8,8 @@
 class Game {
 private:
 	bool pressed = false;
+	float passTime = 0.0f;
+	float lastFrame = glfwGetTime();
 public:
 	Game() { this->window = Window::getInstance(); };
 	Window window;
@@ -17,6 +19,7 @@ public:
 	void init();
 	void run();
 	void inputChecker();
+	void timer();
 };
 
 #endif // !GAME_H_

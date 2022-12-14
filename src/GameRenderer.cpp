@@ -1,5 +1,37 @@
 #include "GameRenderer.h"
 
+GameRenderer::GameRenderer()
+{
+	init();
+}
+
+void GameRenderer::init()
+{
+	this->window = Window::getInstance();
+	tunnel = new Tunnel();
+	//first active block
+	activeBlock = new Block();
+
+	glGenVertexArrays(1, &tunnelVAO);
+
+	tunnel->createTunnel();
+	activeBlock->createBlock();
+}
+
+void GameRenderer::renderer()
+{
+	//rendering tunnel
+	renderTunnel();
+	//rendering first cube
+	renderBlock();
+	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+	glBindVertexArray(0);
+	glUseProgram(0);
+}
+
+
+
 void GameRenderer::renderTunnel()
 {
 	glBindVertexArray(tunnel->getVAO());
@@ -11,40 +43,110 @@ void GameRenderer::renderTunnel()
 
 void GameRenderer::renderBlock()
 {
-	glBindVertexArray(activeBlock->getVAO());
-	activeBlock->drawActiveBlock();
+
+	for (auto& block : solid_blocks) { block.drawSolidBlock(); }
+
+	if (activeBlock->getActive()) {
+		glBindVertexArray(activeBlock->getVAO());
+		activeBlock->drawActiveBlock();
+		if (activeBlock->getZ() == 10.0f) {
+			activeBlock->setActive(false);
+		}
+	}
+	else {
+		solid_blocks.push_back(*activeBlock);
+		activeBlock = new Block();
+		activeBlock->createBlock();
+	}
 
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
 
-GameRenderer::GameRenderer()
-{
-	this->window = Window::getInstance();
-	init();
-}
+void GameRenderer::checkBoxCollision(int key) {
 
-void GameRenderer::renderer()
-{
+	if (key == GLFW_KEY_SPACE) {
+		int coll_z = 11;
 
-	//rendering tunnel
-	renderTunnel();
-	//rendering first cube
-	renderBlock();
+		for (auto& block : solid_blocks) {
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
-	glUseProgram(0);
-}
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getActive()) {
+				if (block.getZ() < coll_z) coll_z = block.getZ();
+			}
+		}
+		std::cout << coll_z << std::endl;
 
-void GameRenderer::init()
-{
-	tunnel = new Tunnel();
-	activeBlock = new Block(5, 5, 1);
-	glGenVertexArrays(1, &tunnelVAO);
-	tunnel->createTunnel();
-	activeBlock->createBlock();
-	
+		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
+		activeBlock->setActive(false);
+	}
+	else if (key == GLFW_KEY_X) { 
 
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() + 1 == block.getZ() &&
+				activeBlock->getActive()) {
+				activeBlock->setActive(false);
+			}
+		}
+	}
+	else if (key == GLFW_KEY_UP) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() - 1 == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if(!taken) activeBlock->moveTile(GLFW_KEY_UP);
+	}
+	else if (key == GLFW_KEY_DOWN) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() + 1 == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if (!taken) activeBlock->moveTile(GLFW_KEY_DOWN);
+	}
+	else if (key == GLFW_KEY_LEFT) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() + 1 == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if (!taken) activeBlock->moveTile(GLFW_KEY_LEFT);
+	}
+	else if (key == GLFW_KEY_RIGHT) {
+		bool taken = false;
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() - 1 == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() == block.getZ() &&
+				activeBlock->getActive()) {
+				taken = true;
+			}
+		}
+
+		if (!taken) activeBlock->moveTile(GLFW_KEY_RIGHT);
+	}
 }

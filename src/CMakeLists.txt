@@ -9,7 +9,7 @@ add_executable(
 	Shaders.cpp
 	Block.cpp
 	"Main.h" "Window.h" "Game.h" "GameRenderer.h" "Tunnel.h"
- "Shaders.h" "Block.h")
+ "Shaders.h" "Block.h" "Color.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE TCLAP)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm)

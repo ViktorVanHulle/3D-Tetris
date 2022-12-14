@@ -1,5 +1,12 @@
 #include "Block.h"
+#include "Color.h"
 
+Block::Block() {
+	this->window = Window::getInstance();
+	x_coord = 5;
+	y_coord = 5;
+	z_coord = 1;
+}
 Block::Block(int x, int y, int z) {
 	this->window = Window::getInstance();
 	x_coord = x;
@@ -41,6 +48,7 @@ void Block::createBlock() {
 
 void Block::drawActiveBlock() {
 
+
 	GLfloat blueColor[] = {
 		0.0f, 0.0f, 1.0f,
 	};//Blue
@@ -61,10 +69,7 @@ void Block::drawActiveBlock() {
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
 	model = glm::translate(model, glm::vec3(posX, posY, posZ));
-	//model = glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-	// ! SCREEN WIDTH && SCREEN HEIGHT
-	projection = glm::perspective(glm::radians(45.0f), 1000.0f / 1000.0f, 0.1f, 100.0f);
-	//projection = glm::perspective(glm::radians(45.0f),  window.SCREEN_WIDTH / window.SCREEN_HEIGHT, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f),  window.SCREEN_WIDTH / window.SCREEN_HEIGHT, 0.1f, 100.0f);
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
@@ -77,6 +82,7 @@ void Block::drawActiveBlock() {
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
 	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
+	glUniform1f(glGetUniformLocation(block_program, "transparency"), 0.3f);
 	glUniform4fv(vertexColorLocation, 1, blueColor);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -96,6 +102,39 @@ void Block::drawActiveBlock() {
 
 void Block::drawSolidBlock() {
 
+	color = Color::chooseColor(z_coord);
+
+	//COLOR
+	int vertexColorLocation = glGetUniformLocation(block_program, "ourColor");
+
+	float posX = 3.0f - (float)x_coord;
+	float posY = 3.0f - (float)y_coord;
+	float posZ = 5.5f - (float)z_coord;
+
+	//Camera
+	glm::mat4 model(1.0f);
+	glm::mat4 view(1.0f);
+	glm::mat4 projection(1.0f);
+	model = glm::translate(model, glm::vec3(posX, posY, posZ));
+	projection = glm::perspective(glm::radians(45.0f),  window.SCREEN_WIDTH / window.SCREEN_HEIGHT, 0.1f, 100.0f);
+	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	glUseProgram(block_program);
+	glBindVertexArray(blockVAO);
+
+	glUniformMatrix4fv(glGetUniformLocation(block_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(block_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(block_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
+	glUniform1f(glGetUniformLocation(block_program, "transparency"), 1.0f);
+
+	glUniform4fv(vertexColorLocation, 1, glm::value_ptr(color));
+
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Block::moveTile(int key) {
@@ -121,8 +160,5 @@ void Block::moveTile(int key) {
 	if (key == GLFW_KEY_X) {
 		if (z_coord + 1 < 11.0f)
 			z_coord++;
-		//if (z_coord == 11.0f) {
-		//	drawSolidBlock();
-		//}
 	}
 }

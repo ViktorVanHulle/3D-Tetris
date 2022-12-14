@@ -81,6 +81,7 @@ out vec4 FragColor;
 
 uniform vec4 ourColor;
 uniform float texRatio;
+uniform float transparency;
 
 in vec3 position;
 
@@ -88,7 +89,7 @@ in vec3 position;
 void main()
 {
     vec4 color = mix(ourColor, texture(uCubeTexture, position), texRatio);
-	FragColor = vec4(color.rgb, 0.3);
+	FragColor = vec4(color.rgb, transparency);
 }
 )";
 #endif
