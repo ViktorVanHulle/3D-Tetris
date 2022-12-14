@@ -11,7 +11,7 @@
 
 class Tunnel {
 private:
-	Window* window;
+	Window window;
 	GLuint tunnel_program;
 	std::shared_ptr<Shader> shader;
 	unsigned int tunnel_VAO;

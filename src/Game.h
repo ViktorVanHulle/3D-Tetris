@@ -7,13 +7,16 @@
 
 class Game {
 private:
+	bool pressed = false;
 public:
-	Window* window = new Window();
+	Game() { this->window = Window::getInstance(); };
+	Window window;
 	GameRenderer* gameRenderer;
 	glm::mat4 perspectiveCamera;
 	glm::mat4 viewMatrix;
 	void init();
 	void run();
+	void inputChecker();
 };
 
 #endif // !GAME_H_

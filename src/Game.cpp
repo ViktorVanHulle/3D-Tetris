@@ -3,12 +3,9 @@
 void Game::init()
 {
     //Window
-    window->windowCreator();
+    window.windowCreator();
     //Renderer
     gameRenderer = new GameRenderer();
-    //Camera
-
-    //glUseProgram(gameRenderer->getTunnel()->getTunnelProgram());
 }
 
 void Game::run()
@@ -17,7 +14,7 @@ void Game::run()
     init();
 
     /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window->winWindow))
+    while (!glfwWindowShouldClose(window.winWindow))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
@@ -28,11 +25,57 @@ void Game::run()
         gameRenderer->renderer();
 
         /* Swap front and back buffers */
-        glfwSwapBuffers(window->winWindow);
+        glfwSwapBuffers(window.winWindow);
 
         /* Poll for and process events */
         glfwPollEvents();
+
+
+        inputChecker();
     }
 
     glfwTerminate();
 }
+
+void Game::inputChecker() {
+
+    //float currrentFrame = glfwGetTime();
+    //float delataTime = currentFrame - lastFrame;
+    //lastFrame = currentFrame;
+    //passTime += delataTime;
+    
+
+    if (glfwGetKey(window.winWindow, GLFW_KEY_Q) == GLFW_PRESS) {
+        glfwTerminate();
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_UP);
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_DOWN);
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_LEFT);
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_RIGHT);
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_X);
+    }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE
+        && pressed == true) {
+        pressed = false;
+    }
+}
+
+

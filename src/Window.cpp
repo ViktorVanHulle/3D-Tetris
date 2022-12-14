@@ -22,6 +22,9 @@ unsigned int Window::windowCreator()
 
     /* Make the window's context current */
     glfwMakeContextCurrent(winWindow);
+
+    //key callback
+    //glfwSetKeyCallback(winWindow, &Window::key_callback);
     
     /* Initialize glad */
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
