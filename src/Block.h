@@ -70,6 +70,7 @@ public:
 	void createBlock();
 	void drawActiveBlock();
 	void drawSolidBlock();
+	void boxCollision();
 	void moveTile(int key);
 	GLuint getBlockProgram() { return block_program; };
 	unsigned int getVAO() { return blockVAO; };
@@ -77,6 +78,7 @@ public:
 	int getY() { return y_coord; };
 	int getZ() { return z_coord; };
 	int getActive() { return active; };
+	void setActive(bool state) { this->active = state; };
 };
 
 #endif // !BLOCK_H_

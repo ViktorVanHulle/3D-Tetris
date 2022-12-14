@@ -68,6 +68,7 @@ void Game::inputChecker() {
     else if (glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_PRESS && pressed == false) {
         pressed = true;
         gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_X);
+        gameRenderer->checkBoxCollision();
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_RELEASE &&

@@ -20,6 +20,7 @@ public:
 	GameRenderer();
 	void renderer();
 	void init();
+	void checkBoxCollision();
 	Tunnel* getTunnel() { return tunnel; };
 	Block* getActiveBlock() { return activeBlock; }
 };

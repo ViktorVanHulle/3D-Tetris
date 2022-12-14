@@ -1,42 +1,21 @@
 #include "GameRenderer.h"
 
-void GameRenderer::renderTunnel()
-{
-	glBindVertexArray(tunnel->getVAO());
-	tunnel->drawTunnel();
-
-	glBindVertexArray(0);
-	glUseProgram(0);
-}
-
-void GameRenderer::renderBlock()
-{
-
-	for (auto& block : solid_blocks) {
-		block.drawSolidBlock();
-	}
-
-	if (activeBlock->getActive()) {
-		glBindVertexArray(activeBlock->getVAO());
-		activeBlock->drawActiveBlock();
-	}
-	else {
-		solid_blocks.push_back(*activeBlock);
-		activeBlock = new Block();
-		activeBlock->createBlock();
-	}
-
-
-
-
-	glBindVertexArray(0);
-	glUseProgram(0);
-}
-
 GameRenderer::GameRenderer()
 {
-	this->window = Window::getInstance();
 	init();
+}
+
+void GameRenderer::init()
+{
+	this->window = Window::getInstance();
+	tunnel = new Tunnel();
+	//first active block
+	activeBlock = new Block();
+
+	glGenVertexArrays(1, &tunnelVAO);
+
+	tunnel->createTunnel();
+	activeBlock->createBlock();
 }
 
 void GameRenderer::renderer()
@@ -53,16 +32,44 @@ void GameRenderer::renderer()
 	glUseProgram(0);
 }
 
-void GameRenderer::init()
+
+
+void GameRenderer::renderTunnel()
 {
-	tunnel = new Tunnel();
-	//first active block
-	activeBlock = new Block();
+	glBindVertexArray(tunnel->getVAO());
+	tunnel->drawTunnel();
 
-	glGenVertexArrays(1, &tunnelVAO);
+	glBindVertexArray(0);
+	glUseProgram(0);
+}
 
-	tunnel->createTunnel();
-	activeBlock->createBlock();
+void GameRenderer::renderBlock()
+{
 
+	for (auto& block : solid_blocks) { block.drawSolidBlock(); }
 
+	if (activeBlock->getActive()) {
+		glBindVertexArray(activeBlock->getVAO());
+		activeBlock->drawActiveBlock();
+	}
+	else {
+		solid_blocks.push_back(*activeBlock);
+		activeBlock = new Block();
+		activeBlock->createBlock();
+	}
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+}
+
+void GameRenderer::checkBoxCollision() {
+
+	for (auto& block : solid_blocks) {
+		if (activeBlock->getX() == block.getX() &&
+			activeBlock->getY() == block.getY() &&
+			activeBlock->getZ()+1 == block.getZ() &&
+			activeBlock->getActive()) {
+			activeBlock->setActive(false);
+		}
+	}
 }
