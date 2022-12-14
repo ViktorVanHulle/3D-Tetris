@@ -65,19 +65,7 @@ void GameRenderer::renderBlock()
 
 void GameRenderer::checkBoxCollision(int key) {
 
-
-	if (key == GLFW_KEY_X) {
-		for (auto& block : solid_blocks) {
-
-			if (activeBlock->getX() == block.getX() &&
-				activeBlock->getY() == block.getY() &&
-				activeBlock->getZ() + 1 == block.getZ() &&
-				activeBlock->getActive()) {
-				activeBlock->setActive(false);
-			}
-		}
-	}
-	else if (key == GLFW_KEY_SPACE) {
+	if (key == GLFW_KEY_SPACE) {
 		int coll_z = 11;
 
 		for (auto& block : solid_blocks) {
@@ -92,6 +80,18 @@ void GameRenderer::checkBoxCollision(int key) {
 
 		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
 		activeBlock->setActive(false);
+	}
+	else if (key == GLFW_KEY_X) { //X, UP, DOWN, LEFT, RIGHT
+
+		for (auto& block : solid_blocks) {
+
+			if (activeBlock->getX() == block.getX() &&
+				activeBlock->getY() == block.getY() &&
+				activeBlock->getZ() + 1 == block.getZ() &&
+				activeBlock->getActive()) {
+				activeBlock->setActive(false);
+			}
+		}
 	}
 
 
