@@ -7,7 +7,6 @@ Tunnel::Tunnel() {
 void Tunnel::createTunnel()
 {
 	createFarWall();
-
 	//create side walls
 	createSideWall();
 	createSideWall();
@@ -95,13 +94,13 @@ void Tunnel::createFarWall() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glGenBuffers(1, &EBO_white);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
+	glGenBuffers(1, &EBO_whiteFar);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_whiteFar);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_white), indices_white, GL_STATIC_DRAW);
 
 
-	glGenBuffers(1, &EBO_black);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_black);
+	glGenBuffers(1, &EBO_blackFar);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_blackFar);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_white), indices_black, GL_STATIC_DRAW);
 
 
@@ -282,12 +281,12 @@ void Tunnel::drawFarWall() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_whiteFar);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);
 
 	glDrawElements(GL_TRIANGLES, 128 * 3, GL_UNSIGNED_INT, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_black);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_blackFar);
 	glUniform4fv(vertexColorLocation, 1, blackColor);
 
 	glDrawElements(GL_TRIANGLES, 128 * 3, GL_UNSIGNED_INT, 0);

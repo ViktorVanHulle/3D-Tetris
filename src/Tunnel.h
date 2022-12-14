@@ -13,13 +13,14 @@ class Tunnel {
 private:
 	Window* window;
 	GLuint tunnel_program;
-	GLuint sideWalls_program;
 	std::shared_ptr<Shader> shader;
 	unsigned int tunnel_VAO;
 	unsigned int farVAO;
 	unsigned int sideVAO;
 	unsigned int EBO_white;
 	unsigned int EBO_black;
+	unsigned int EBO_whiteFar;
+	unsigned int EBO_blackFar;
 public:
 	Tunnel();
 	void createTunnel();
