@@ -10,9 +10,9 @@ void Tunnel::createTunnel()
 
 	//create side walls
 	createSideWall();
-	//createSideWall();
-	//createSideWall();
-	//createSideWall();
+	createSideWall();
+	createSideWall();
+	createSideWall();
 }
 
 void Tunnel::createFarWall() {
@@ -133,7 +133,7 @@ void Tunnel::createSideWall() {
 	unsigned int indices_black[100 * 6];
 
 	//length of cube
-	float len = 1.0f / 8.0f;
+	float len = 1.0f / 5.0f;
 
 	//array of vertices
 	for (int y = 0; y < 11; y++) {
@@ -245,9 +245,9 @@ void Tunnel::drawTunnel()
 
 	drawFarWall();
 	drawSideWall_L();
-	//drawSideWall_R();
-	//drawSideWall_T();
-	//drawSideWall_B();
+	drawSideWall_R();
+	drawSideWall_T();
+	drawSideWall_B();
 }
 
 
@@ -269,10 +269,10 @@ void Tunnel::drawFarWall() {
 	glm::mat4 model(1.0f);
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+	model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
 	projection = glm::perspective(glm::radians(45.0f), window->SCREEN_WIDTH / window->SCREEN_HEIGHT, 0.1f, 100.0f);
-	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 22.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 
 	glUseProgram(tunnel_program);
@@ -310,9 +310,9 @@ void Tunnel::drawSideWall_L() {
 	glm::mat4 model(1.0f);
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
-	model = glm::translate(model, glm::vec3(-1.5f, 0.0f, 1.0f));
-	//model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+	model = glm::translate(model, glm::vec3(-2.5f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(10.5f, 5.0f, 5.0f));
 	projection = glm::perspective(glm::radians(45.0f), window->SCREEN_WIDTH / window->SCREEN_HEIGHT, 0.1f, 100.0f);
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -353,10 +353,12 @@ void Tunnel::drawSideWall_R() {
 	glm::mat4 model(1.0f);
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+	model = glm::translate(model, glm::vec3(2.5f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(10.5f, 5.0f, 5.0f));
 	projection = glm::perspective(glm::radians(45.0f), window->SCREEN_WIDTH / window->SCREEN_HEIGHT, 0.1f, 100.0f);
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 
 
 	glUseProgram(tunnel_program);
@@ -395,10 +397,13 @@ void Tunnel::drawSideWall_T() {
 	glm::mat4 model(1.0f);
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(10.5f, 5.0f, 5.0f));
 	projection = glm::perspective(glm::radians(45.0f), window->SCREEN_WIDTH / window->SCREEN_HEIGHT, 0.1f, 100.0f);
 	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 
 
 	glUseProgram(tunnel_program);
@@ -437,10 +442,13 @@ void Tunnel::drawSideWall_B() {
 	glm::mat4 model(1.0f);
 	glm::mat4 view(1.0f);
 	glm::mat4 projection(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-	model = glm::scale(model, glm::vec3(5.0f, 5.0f, 5.0f));
+	model = glm::translate(model, glm::vec3(0.0f, -2.5f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(10.5f, 5.0f, 5.0f));
 	projection = glm::perspective(glm::radians(45.0f), window->SCREEN_WIDTH / window->SCREEN_HEIGHT, 0.1f, 100.0f);
-	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	view = glm::lookAt(glm::vec3(0.0f, 0.0f, 11.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 
 
 	glUseProgram(tunnel_program);
