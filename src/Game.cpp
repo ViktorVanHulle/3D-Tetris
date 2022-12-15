@@ -2,11 +2,9 @@
 
 void Game::init()
 {
-    //Window
     window.windowCreator();
-
-    //Renderer
     gameRenderer = new GameRenderer();
+    textureLoader = new TextureLoader();
 }
 
 void Game::run()
@@ -69,12 +67,17 @@ void Game::inputChecker() {
         pressed = true;
         gameRenderer->checkBoxCollision(GLFW_KEY_SPACE);
     }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->toggleTexture(textureMode = !textureMode);
+    }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE &&
-        glfwGetKey(window.winWindow, GLFW_KEY_SPACE) == GLFW_RELEASE
+        glfwGetKey(window.winWindow, GLFW_KEY_SPACE) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_RELEASE 
         && pressed == true) {
         pressed = false;
     }

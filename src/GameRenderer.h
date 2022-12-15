@@ -10,6 +10,7 @@
 class GameRenderer {
 private:
 	unsigned int tunnelVAO;
+	float ratio = 0.0f;
 	Tunnel* tunnel;
 	Block* activeBlock;
 	std::vector<Block> solid_blocks;
@@ -21,6 +22,7 @@ public:
 	void renderer();
 	void init();
 	void checkBoxCollision(int key);
+	void toggleTexture(bool mode);
 	Tunnel* getTunnel() { return tunnel; };
 	Block* getActiveBlock() { return activeBlock; }
 };

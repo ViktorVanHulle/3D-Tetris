@@ -10,10 +10,11 @@
 
 class Block {
 private:
-	bool active = true;
 	int x_coord;
 	int y_coord;
 	int z_coord;
+	bool active = true;
+	float texture_ratio = 0.0f;
 	glm::vec4 color;
 	GLuint block_program;
 	std::shared_ptr<Shader> shader;
@@ -81,6 +82,7 @@ public:
 	void setZ(int z) { this->z_coord = z; };
 	int getActive() { return active; };
 	void setActive(bool state) { this->active = state; };
+	void setTextureRatio(float ratio) { this->texture_ratio = ratio; };
 };
 
 #endif // !BLOCK_H_

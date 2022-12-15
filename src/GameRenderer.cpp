@@ -20,12 +20,10 @@ void GameRenderer::init()
 
 void GameRenderer::renderer()
 {
-	//rendering tunnel
+
 	renderTunnel();
-	//rendering first cube
 	renderBlock();
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
@@ -43,8 +41,8 @@ void GameRenderer::renderTunnel()
 
 void GameRenderer::renderBlock()
 {
-
-	for (auto& block : solid_blocks) { block.drawSolidBlock(); }
+	tunnel->setTextureRatio(ratio);
+	for (auto& block : solid_blocks) { block.setTextureRatio(ratio); block.drawSolidBlock(); }
 
 	if (activeBlock->getActive()) {
 		glBindVertexArray(activeBlock->getVAO());
@@ -149,4 +147,8 @@ void GameRenderer::checkBoxCollision(int key) {
 
 		if (!taken) activeBlock->moveTile(GLFW_KEY_RIGHT);
 	}
+}
+
+void GameRenderer::toggleTexture(bool mode) {
+	ratio = mode ? 0.0f : 0.7f;
 }

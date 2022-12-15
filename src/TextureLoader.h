@@ -3,9 +3,12 @@
 
 #include "Externs.h"
 
+
 class TextureLoader {
 private:
 public:
+	TextureLoader();
+	void init();
 };
 
 #endif // !TEXTURELOADER_H_
