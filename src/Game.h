@@ -4,16 +4,20 @@
 #include "Externs.h"
 #include "Window.h"
 #include "GameRenderer.h"
+#include "TextureLoader.h"
 
 class Game {
 private:
 	bool pressed = false;
+	bool textureMode = false;
 	float passTime = 0.0f;
 	float lastFrame = glfwGetTime();
 public:
 	Game() { this->window = Window::getInstance(); };
 	Window window;
 	GameRenderer* gameRenderer;
+	TextureLoader* textureLoader;
+	
 	glm::mat4 perspectiveCamera;
 	glm::mat4 viewMatrix;
 	void init();

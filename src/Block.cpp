@@ -126,7 +126,7 @@ void Block::drawSolidBlock() {
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
+	glUniform1f(glGetUniformLocation(block_program, "texRatio"), texture_ratio);
 	glUniform1f(glGetUniformLocation(block_program, "transparency"), 1.0f);
 
 	glUniform4fv(vertexColorLocation, 1, glm::value_ptr(color));

@@ -7,7 +7,6 @@ Tunnel::Tunnel() {
 void Tunnel::createTunnel()
 {
 	createFarWall();
-	//create side walls
 	createSideWall();
 	createSideWall();
 	createSideWall();
@@ -29,10 +28,6 @@ void Tunnel::createFarWall() {
 	float vertices[36 * 2];
 	unsigned int indices_white[25 * 6];
 	unsigned int indices_black[25 * 6];
-
-	//std::vector<float> vertices(ratioPowV * 2);
-	//std::vector<int> indices_white(ratioPow * ratioPlus);
-	//std::vector<int> indices_black(ratioPow * ratioPlus);
 
 	//length of cube
 	float len = 1.0f / 5.0f;
@@ -69,19 +64,17 @@ void Tunnel::createFarWall() {
 		}
 	}
 
-	//}
 
-	//float vertices_texture[81 * 2];
-
-	//for (int i = 0; i < 9; i++) {
-	//	for (int j = 0; j < 9; j++) {
-	//		vertices_texture[(i * 9 + j) * 2] = 0.0f + len * j;
-	//		vertices_texture[(i * 9 + j) * 2 + 1] = 1.0f - len * i;
-	//	}
-	//}
+	float vertices_texture[36 * 2];
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			vertices_texture[(i * 6 + j) * 2] = 0.0f + len * j;
+			vertices_texture[(i * 6 + j) * 2 + 1] = 1.0f - len * i;
+		}
+	}
 
 
-	unsigned int VBO;
+	unsigned int VBO, VBO_textures;
 
 	glGenVertexArrays(1, &farVAO);
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
@@ -89,10 +82,15 @@ void Tunnel::createFarWall() {
 
 
 	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &VBO_textures);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_textures);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_texture), vertices_texture, GL_STATIC_DRAW);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
 	glGenBuffers(1, &EBO_whiteFar);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_whiteFar);
@@ -111,13 +109,13 @@ void Tunnel::createFarWall() {
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)12);
 
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_textures);
+
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	
+
+	glBindVertexArray(0);	
 }
 
 void Tunnel::createSideWall() {
@@ -194,12 +192,21 @@ void Tunnel::createSideWall() {
 
 	}
 
+	float vertices_texture[121 * 2];
+	for (int i = 0; i < 11; i++) {
+		for (int j = 0; j < 11; j++) {
+			vertices_texture[(i * 11 + j) * 2] = 0.0f + len * j;
+			vertices_texture[(i * 11 + j) * 2 + 1] = 1.0f - len * i;
+		}
+	}
 
-	unsigned int VBO;
+
+
+	unsigned int VBO, VBO_textures;
 
 	glGenVertexArrays(1, &sideVAO);
 	glGenBuffers(1, &VBO);
-
+	glGenBuffers(1, &VBO_textures);
 
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(sideVAO);
@@ -227,16 +234,16 @@ void Tunnel::createSideWall() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)12);
 
 
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_textures);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_texture), vertices_texture, GL_STATIC_DRAW);
+
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (const void*)0);
 
 
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	
-}
 
+}
 
 
 void Tunnel::drawTunnel()
@@ -280,6 +287,7 @@ void Tunnel::drawFarWall() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(tunnel_program, "texRatio"), texture_ratio);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_whiteFar);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);
@@ -328,6 +336,7 @@ void Tunnel::drawSideWall_L() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(tunnel_program, "texRatio"), texture_ratio);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);
@@ -372,6 +381,7 @@ void Tunnel::drawSideWall_R() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(tunnel_program, "texRatio"), texture_ratio);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);
@@ -417,6 +427,7 @@ void Tunnel::drawSideWall_T() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(tunnel_program, "texRatio"), texture_ratio);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);
@@ -462,6 +473,7 @@ void Tunnel::drawSideWall_B() {
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(tunnel_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(tunnel_program, "texRatio"), texture_ratio);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_white);
 	glUniform4fv(vertexColorLocation, 1, whiteColor);

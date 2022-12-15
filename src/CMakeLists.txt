@@ -8,8 +8,9 @@ add_executable(
 	Tunnel.cpp
 	Shaders.cpp
 	Block.cpp
+	TextureLoader.cpp
 	"Main.h" "Window.h" "Game.h" "GameRenderer.h" "Tunnel.h"
- "Shaders.h" "Block.h" "Color.h")
+ "Shaders.h" "Block.h" "Color.h" "TextureLoader.h")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE TCLAP)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm)

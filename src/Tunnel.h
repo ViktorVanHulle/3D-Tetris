@@ -14,6 +14,7 @@ private:
 	Window window;
 	GLuint tunnel_program;
 	std::shared_ptr<Shader> shader;
+	float texture_ratio = 0.0f;
 	unsigned int tunnel_VAO;
 	unsigned int farVAO;
 	unsigned int sideVAO;
@@ -36,6 +37,7 @@ public:
 	unsigned int getEBOWhite() { return EBO_black; };
 	unsigned int getEBOBlack() { return EBO_white; };
 	GLuint getTunnelProgram() { return tunnel_program; };
+	void setTextureRatio(float ratio) { this->texture_ratio = ratio; };
 };
 
 #endif // !TUNNEL_H_
