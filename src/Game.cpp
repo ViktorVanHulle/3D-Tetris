@@ -20,8 +20,9 @@ void Game::run()
         //bg color
         glClearColor(0.128f, 0.128f, 0.128f, 1.0f);
 
-        //CODE HERE
         gameRenderer->renderer();
+        /* Check if game is over */
+        gameOver();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window.winWindow);
@@ -41,7 +42,7 @@ void Game::inputChecker() {
     timer();
 
     if (glfwGetKey(window.winWindow, GLFW_KEY_Q) == GLFW_PRESS) {
-        glfwTerminate();
+        glfwSetWindowShouldClose(window.winWindow, true);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_PRESS && pressed == false) {
         pressed = true;
@@ -71,13 +72,18 @@ void Game::inputChecker() {
         pressed = true;
         gameRenderer->toggleTexture(textureMode = !textureMode);
     }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_I) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->toggleLighting(lightingMode = !lightingMode);
+    }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_SPACE) == GLFW_RELEASE &&
-        glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_RELEASE 
+        glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_I) == GLFW_RELEASE 
         && pressed == true) {
         pressed = false;
     }
@@ -92,11 +98,14 @@ void Game::timer() {
 
 
     if (passTime > 2.0f) {
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_X);
         gameRenderer->checkBoxCollision(GLFW_KEY_X);
         lastFrame = currentFrame;
         passTime = 0.0f;
     }
 
+}
+
+void Game::gameOver() {
+    if (gameRenderer->isGameOver()) glfwSetWindowShouldClose(window.winWindow, true);
 }
 

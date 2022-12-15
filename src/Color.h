@@ -17,7 +17,6 @@ namespace Color {
 		if (z == 9) return glm::vec4(241.0f / 256.0f, 196.0f / 256.0f, 83.0f / 256.0f, 1.0f);
 		if (z == 10) return glm::vec4(242.0f / 256.0f, 158.0f / 256.0f, 76.0f / 256.0f, 1.0f);
 
-
 		return glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 }

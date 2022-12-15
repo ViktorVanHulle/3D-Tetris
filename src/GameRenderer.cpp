@@ -28,11 +28,8 @@ void GameRenderer::renderer()
 	glUseProgram(0);
 }
 
-
-
 void GameRenderer::renderTunnel()
 {
-	glBindVertexArray(tunnel->getVAO());
 	tunnel->drawTunnel();
 
 	glBindVertexArray(0);
@@ -42,10 +39,12 @@ void GameRenderer::renderTunnel()
 void GameRenderer::renderBlock()
 {
 	tunnel->setTextureRatio(ratio);
+	tunnel->setIllumination(illuminationMode);
 	for (auto& block : solid_blocks) { block.setTextureRatio(ratio); block.drawSolidBlock(); }
 
 	if (activeBlock->getActive()) {
 		glBindVertexArray(activeBlock->getVAO());
+		activeBlock->setTextureRatio(ratio);
 		activeBlock->drawActiveBlock();
 		if (activeBlock->getZ() == 10.0f) {
 			activeBlock->setActive(false);
@@ -74,13 +73,12 @@ void GameRenderer::checkBoxCollision(int key) {
 				if (block.getZ() < coll_z) coll_z = block.getZ();
 			}
 		}
-		std::cout << coll_z << std::endl;
-
 		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
 		activeBlock->setActive(false);
 	}
 	else if (key == GLFW_KEY_X) { 
 
+		activeBlock->moveTile(GLFW_KEY_X);
 		for (auto& block : solid_blocks) {
 
 			if (activeBlock->getX() == block.getX() &&
@@ -149,6 +147,17 @@ void GameRenderer::checkBoxCollision(int key) {
 	}
 }
 
-void GameRenderer::toggleTexture(bool mode) {
-	ratio = mode ? 0.0f : 0.7f;
+bool GameRenderer::isGameOver() {
+
+	bool isGameOver = false;
+
+	for (auto& block : solid_blocks) {
+
+		if (block.getZ() == 1){
+			isGameOver = true;
+		}
+	}
+
+	return isGameOver;
+	
 }
