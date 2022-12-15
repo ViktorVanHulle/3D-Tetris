@@ -153,7 +153,6 @@ void Block::moveTile(int key) {
 			x_coord--;
 	}
 	if (key == GLFW_KEY_X) {
-		if (z_coord + 1 < 11.0f)
-			z_coord++;
+		z_coord++;
 	}
 }

@@ -77,7 +77,6 @@ void GameRenderer::checkBoxCollision(int key) {
 		activeBlock->setActive(false);
 	}
 	else if (key == GLFW_KEY_X) { 
-
 		activeBlock->moveTile(GLFW_KEY_X);
 		for (auto& block : solid_blocks) {
 
@@ -86,8 +85,12 @@ void GameRenderer::checkBoxCollision(int key) {
 				activeBlock->getZ() + 1 == block.getZ() &&
 				activeBlock->getActive()) {
 				activeBlock->setActive(false);
+				renderBlock();
 			}
+				
 		}
+
+
 	}
 	else if (key == GLFW_KEY_UP) {
 		bool taken = false;
