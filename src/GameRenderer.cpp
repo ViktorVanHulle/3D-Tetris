@@ -75,13 +75,12 @@ void GameRenderer::checkBoxCollision(int key) {
 				if (block.getZ() < coll_z) coll_z = block.getZ();
 			}
 		}
-		std::cout << coll_z << std::endl;
-
 		activeBlock->setZ(coll_z != 11 ? coll_z - 1 : 10);
 		activeBlock->setActive(false);
 	}
 	else if (key == GLFW_KEY_X) { 
 
+		activeBlock->moveTile(GLFW_KEY_X);
 		for (auto& block : solid_blocks) {
 
 			if (activeBlock->getX() == block.getX() &&
