@@ -81,7 +81,7 @@ void Block::drawActiveBlock() {
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(block_program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
-	glUniform1f(glGetUniformLocation(block_program, "texRatio"), 0.0f);
+	glUniform1f(glGetUniformLocation(block_program, "texRatio"), texture_ratio);
 	glUniform1f(glGetUniformLocation(block_program, "transparency"), 0.3f);
 	glUniform4fv(vertexColorLocation, 1, blueColor);
 
@@ -133,8 +133,7 @@ void Block::drawSolidBlock() {
 
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Block::moveTile(int key) {

@@ -23,6 +23,7 @@ public:
 	void init();
 	void checkBoxCollision(int key);
 	void toggleTexture(bool mode);
+	bool isGameOver();
 	Tunnel* getTunnel() { return tunnel; };
 	Block* getActiveBlock() { return activeBlock; }
 };

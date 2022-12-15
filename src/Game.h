@@ -24,6 +24,7 @@ public:
 	void run();
 	void inputChecker();
 	void timer();
+	void gameOver();
 };
 
 #endif // !GAME_H_

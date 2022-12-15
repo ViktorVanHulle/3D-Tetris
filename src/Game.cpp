@@ -20,8 +20,9 @@ void Game::run()
         //bg color
         glClearColor(0.128f, 0.128f, 0.128f, 1.0f);
 
-        //CODE HERE
         gameRenderer->renderer();
+        /* Check if game is over */
+        gameOver();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window.winWindow);
@@ -41,7 +42,7 @@ void Game::inputChecker() {
     timer();
 
     if (glfwGetKey(window.winWindow, GLFW_KEY_Q) == GLFW_PRESS) {
-        glfwTerminate();
+        glfwSetWindowShouldClose(window.winWindow, true);
     }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_PRESS && pressed == false) {
         pressed = true;
@@ -98,5 +99,9 @@ void Game::timer() {
         passTime = 0.0f;
     }
 
+}
+
+void Game::gameOver() {
+    if (gameRenderer->isGameOver()) glfwSetWindowShouldClose(window.winWindow, true);
 }
 

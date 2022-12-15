@@ -46,6 +46,7 @@ void GameRenderer::renderBlock()
 
 	if (activeBlock->getActive()) {
 		glBindVertexArray(activeBlock->getVAO());
+		activeBlock->setTextureRatio(ratio);
 		activeBlock->drawActiveBlock();
 		if (activeBlock->getZ() == 10.0f) {
 			activeBlock->setActive(false);
@@ -151,4 +152,19 @@ void GameRenderer::checkBoxCollision(int key) {
 
 void GameRenderer::toggleTexture(bool mode) {
 	ratio = mode ? 0.0f : 0.7f;
+}
+
+bool GameRenderer::isGameOver() {
+
+	bool isGameOver = false;
+
+	for (auto& block : solid_blocks) {
+
+		if (block.getZ() == 1){
+			isGameOver = true;
+		}
+	}
+
+	return isGameOver;
+	
 }
