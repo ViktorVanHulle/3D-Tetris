@@ -28,11 +28,8 @@ void GameRenderer::renderer()
 	glUseProgram(0);
 }
 
-
-
 void GameRenderer::renderTunnel()
 {
-	glBindVertexArray(tunnel->getVAO());
 	tunnel->drawTunnel();
 
 	glBindVertexArray(0);
@@ -42,6 +39,7 @@ void GameRenderer::renderTunnel()
 void GameRenderer::renderBlock()
 {
 	tunnel->setTextureRatio(ratio);
+	tunnel->setIllumination(illuminationMode);
 	for (auto& block : solid_blocks) { block.setTextureRatio(ratio); block.drawSolidBlock(); }
 
 	if (activeBlock->getActive()) {
@@ -147,10 +145,6 @@ void GameRenderer::checkBoxCollision(int key) {
 
 		if (!taken) activeBlock->moveTile(GLFW_KEY_RIGHT);
 	}
-}
-
-void GameRenderer::toggleTexture(bool mode) {
-	ratio = mode ? 0.0f : 0.7f;
 }
 
 bool GameRenderer::isGameOver() {

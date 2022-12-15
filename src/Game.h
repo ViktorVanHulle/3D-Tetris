@@ -10,6 +10,7 @@ class Game {
 private:
 	bool pressed = false;
 	bool textureMode = false;
+	bool lightingMode = false;
 	float passTime = 0.0f;
 	float lastFrame = glfwGetTime();
 public:

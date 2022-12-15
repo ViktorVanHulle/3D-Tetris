@@ -40,9 +40,6 @@ void Block::createBlock() {
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (const void*)12);
 
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 }
 
@@ -55,7 +52,7 @@ void Block::drawActiveBlock() {
 
 	GLfloat darkBlueColor[] = {
 	0.0f, 0.0f, 139.0f / 256.0f
-	};//Blue
+	};//Dark blue
 
 	//COLOR
 	int vertexColorLocation = glGetUniformLocation(block_program, "ourColor");
@@ -138,7 +135,6 @@ void Block::drawSolidBlock() {
 
 void Block::moveTile(int key) {
 
-	//float len = 1.0f / 5.0f;
 
 	if (key == GLFW_KEY_UP) {
 		if (y_coord > 1)

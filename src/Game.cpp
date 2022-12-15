@@ -72,13 +72,18 @@ void Game::inputChecker() {
         pressed = true;
         gameRenderer->toggleTexture(textureMode = !textureMode);
     }
+    else if (glfwGetKey(window.winWindow, GLFW_KEY_I) == GLFW_PRESS && pressed == false) {
+        pressed = true;
+        gameRenderer->toggleLighting(lightingMode = !lightingMode);
+    }
     else if (glfwGetKey(window.winWindow, GLFW_KEY_UP) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_DOWN) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_LEFT) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_X) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_RIGHT) == GLFW_RELEASE &&
         glfwGetKey(window.winWindow, GLFW_KEY_SPACE) == GLFW_RELEASE &&
-        glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_RELEASE 
+        glfwGetKey(window.winWindow, GLFW_KEY_T) == GLFW_RELEASE &&
+        glfwGetKey(window.winWindow, GLFW_KEY_I) == GLFW_RELEASE 
         && pressed == true) {
         pressed = false;
     }
@@ -93,7 +98,6 @@ void Game::timer() {
 
 
     if (passTime > 2.0f) {
-        gameRenderer->getActiveBlock()->moveTile(GLFW_KEY_X);
         gameRenderer->checkBoxCollision(GLFW_KEY_X);
         lastFrame = currentFrame;
         passTime = 0.0f;
